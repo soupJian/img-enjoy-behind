@@ -29,6 +29,7 @@ const mysqlRequest = (sql) =>{
         console.log("查询异常");
       }else{
         resolve(result)
+        connection.release()
       }
     })
   })
