@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const fs = require('fs')
-const {mysqlRequest} = require('../util/mysql')
-const {successCode} = require('../util/type')
+const {mysqlRequest} = require('../../util/mysql')
+const {successCode} = require('../../util/type')
 
 /* GET users listing. */
 router.post('/', async function(req, res, next) {
