@@ -9,7 +9,7 @@ const  options = {
   charset: 'UTF8MB4_GENERAL_CI'
 }
 // 创建与数据库的连接对象
-var connection = mysql.createConnection(options)
+const connection = mysql.createConnection(options)
 // 建立连接
 // connection.connect((err)=>{
 //   // 如果建立失败
@@ -31,10 +31,12 @@ const mysqlRequest = (sql) =>{
         console.log("查询异常");
       }else{
         resolve(result)
-        connection.release()
       }
     })
   })
 }
-exports.connection = connection
-exports.mysqlRequest = mysqlRequest
+
+module.exports = {
+  connection,
+  mysqlRequest
+};
