@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const fs = require('fs')
 const {mysqlRequest} = require('../../util/mysql')
-const {successCode} = require('../../util/type')
+const {successCode, errorCode, errorMessage} = require('../../util/type')
 
 /* GET users listing. */
 router.post('/', async function(req, res, next) {
@@ -14,13 +14,17 @@ router.post('/', async function(req, res, next) {
   fs.mkdir(userPath,(err)=>{
     if(err){
         console.log("创建文件夹错误"+err);
+        res.send({
+          code: errorCode,
+          message: errorMessage
+        })
         return false
     }
     mysqlRequest(sql)
-  })
-  res.send({
-    code: successCode,
-    message: "注册成功"
+    res.send({
+      code: successCode,
+      message: "注册成功"
+    })
   })
 });
 
