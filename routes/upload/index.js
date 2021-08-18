@@ -11,17 +11,18 @@ const upload = multer({dest: './public/upload'})
 router.post('/', upload.array('file',9),async function(req, res, next) {
   const {files,id} = req
   const address = []
-  const time = new Date()
-  files.forEach(item => {
+  const time = Date.now()
+  files.forEach((item,index) => {
     const oldpath = item.destination + '/' + item.filename
     const newPath = `${item.destination}/${item.filename}_${item.originalname}`
     fs.rename(oldpath,newPath,()=>{})
-    address.push(`http://175.24.116.96:3300/upload/${item.filename}_${item.originalname}`)
+    const uploadAddress = `http://175.24.116.96:3300/upload/${item.filename}_${item.originalname}`
+    address.push(uploadAddress)
     let sql
     if(id){
-      sql = `insert into upload values (${time},${id},'${address}')`
+      sql = `insert into upload values (${time},${id},'${uploadAddress}')`
     }else{
-      sql = `insert into upload values (${time},${admin.id},'${address}')`
+      sql = `insert into upload values (${time},${admin.id},'${uploadAddress}')`
     }
     mysqlRequest(sql)
   });
