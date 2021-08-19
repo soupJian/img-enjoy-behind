@@ -21,10 +21,10 @@ router.post('/', upload.array('file',9),async function(req, res, next) {
     const uploadAddress = `http://175.24.116.96:3300/upload/${item.filename}_${item.originalname}`
     address.push(uploadAddress)
     let sql
-    if(id){
-      sql = `insert into upload values (${id},${time},'${uploadAddress}','${defaultDescription}',0,0)`
-    }else{
+    if(id === 'null'){
       sql = `insert into upload values (${admin.id},${time},'${uploadAddress}','${defaultDescription}',0,0)`
+    }else{
+      sql = `insert into upload values (${id},${time},'${uploadAddress}','${defaultDescription}',0,0)`
     }
     mysqlRequest(sql).then(()=>{
       count++
