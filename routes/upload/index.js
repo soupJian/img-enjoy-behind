@@ -9,9 +9,11 @@ const upload = multer({dest: './public/upload'})
 
 /* GET users listing. */
 router.post('/', upload.array('file',9),async function(req, res, next) {
-  const {files,id} = req
+  const {files} = req
+  const id = req.headers.id
   const address = []
   const time = Date.now()
+  let count = 0
   files.forEach(item => {
     const oldpath = item.destination + '/' + item.filename
     const newPath = `${item.destination}/${item.filename}_${item.originalname}`
@@ -24,13 +26,17 @@ router.post('/', upload.array('file',9),async function(req, res, next) {
     }else{
       sql = `insert into upload values (${admin.id},${time},'${uploadAddress}','${defaultDescription}',0,0)`
     }
-    mysqlRequest(sql)
+    mysqlRequest(sql).then(()=>{
+      count++
+      if(count === files.length){
+        res.send({
+          code: successCode,
+          message: '上传成功',
+          address
+        })
+      }
+    })
   });
-  res.send({
-    code: successCode,
-    message: '上传成功',
-    address
-  })
 });
 
 module.exports = router;
