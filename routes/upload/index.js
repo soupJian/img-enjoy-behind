@@ -3,7 +3,7 @@ var router = express.Router();
 var multer=require('multer');
 var fs=require('fs');
 const {mysqlRequest} = require('../../util/mysql')
-const {successCode,admin} = require('../../util/type')
+const {successCode,defaultDescription,admin} = require('../../util/type')
 
 const upload = multer({dest: './public/upload'})
 
@@ -12,7 +12,7 @@ router.post('/', upload.array('file',9),async function(req, res, next) {
   const {files,id} = req
   const address = []
   const time = Date.now()
-  files.forEach((item,index) => {
+  files.forEach(item => {
     const oldpath = item.destination + '/' + item.filename
     const newPath = `${item.destination}/${item.filename}_${item.originalname}`
     fs.rename(oldpath,newPath,()=>{})
@@ -20,9 +20,9 @@ router.post('/', upload.array('file',9),async function(req, res, next) {
     address.push(uploadAddress)
     let sql
     if(id){
-      sql = `insert into upload values (${time},${id},'${uploadAddress}')`
+      sql = `insert into upload values (${id},${time},'${uploadAddress}','${defaultDescription}',0,0)`
     }else{
-      sql = `insert into upload values (${time},${admin.id},'${uploadAddress}')`
+      sql = `insert into upload values (${admin.id},${time},'${uploadAddress}','${defaultDescription}',0,0)`
     }
     mysqlRequest(sql)
   });

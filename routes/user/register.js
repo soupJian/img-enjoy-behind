@@ -25,12 +25,12 @@ router.post('/', async function(req, res, next) {
   //  2.注册时候创建用户文件夹
   fs.mkdir(userPath,(err)=>{
     if(err){
-        console.log("创建文件夹错误"+err);
-        res.send({
-          code: errorCode,
-          message: errorMessage
-        })
-        return false
+      console.log("创建文件夹错误"+err);
+      res.send({
+        code: errorCode,
+        message: errorMessage
+      })
+      return false
     }
     mysqlRequest(sql)
     res.send({
