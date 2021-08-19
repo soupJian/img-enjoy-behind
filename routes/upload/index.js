@@ -15,10 +15,13 @@ router.post('/', upload.array('file',9),async function(req, res, next) {
   const time = Date.now()
   let count = 0
   files.forEach(item => {
+    const index= item.originalname.lastIndexOf(".");
+    //获取后缀 判断文件格式
+    const ext = item.originalname.substr(index);
     const oldpath = item.destination + '/' + item.filename
-    const newPath = `${item.destination}/${item.filename}_${item.originalname}`
+    const newPath = `${item.destination}/${item.filename}${ext}`
     fs.rename(oldpath,newPath,()=>{})
-    const uploadAddress = `http://175.24.116.96:3300/upload/${item.filename}_${item.originalname}`
+    const uploadAddress = `http://175.24.116.96:3300/upload/${item.filename}${ext}`
     address.push(uploadAddress)
     let sql
     if(id === 'null'){
