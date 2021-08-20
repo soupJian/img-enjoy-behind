@@ -7,7 +7,7 @@ var logger = require('morgan');
 var registerRouter = require('./routes/user/register');
 var loginRouter = require('./routes/user/login')
 var uploadRouter = require('./routes/upload/index')
-
+var hotImgRouter = require('./routes/enjoy/hot_image')
 
 var app = express();
 
@@ -24,6 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/upload',uploadRouter)
+app.use('/hot_img',hotImgRouter)
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
