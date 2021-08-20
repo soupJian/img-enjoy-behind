@@ -4,7 +4,15 @@ const {mysqlRequest} = require('../../util/mysql')
 const {successCode,errorCode} = require('../../util/type')
 
 router.get('/', async function(req, res, next) {
-  const sql = 'select * from upload order by num desc limit 20'
+  const id = req.headers.id
+  if(id === 'null'){
+    res.send({
+      code: successCode,
+      ImageList: []
+    })
+    return false
+  }
+  const sql = `select * from upload where id = ${id}`
   const result = await mysqlRequest(sql)
   res.send({
     code: successCode,
