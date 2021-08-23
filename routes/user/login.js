@@ -13,7 +13,7 @@ router.post('/', async function(req, res, next) {
   if(result.length === 0 || result[0].password !== password){
     res.send({
       code: errorCode,
-      message: "用户名或者密码错误"
+      message: "用户名或者密码错误",
     })
     return false
   }
@@ -21,8 +21,10 @@ router.post('/', async function(req, res, next) {
   result = await mysqlRequest(sql)
   res.send({
     code: successCode,
-    message: '登录成功',
-    user: result[0]
+    data:{
+      message: '登录成功',
+      user: result[0]
+    }
   })
 });
 

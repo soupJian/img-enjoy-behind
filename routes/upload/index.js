@@ -37,8 +37,10 @@ router.post('/', upload.array('file',9),async function(req, res, next) {
           if(count === files.length){
             res.send({
               code: successCode,
-              message: '上传成功',
-              address
+              data:{
+                message: '上传成功',
+                address
+              }
             })
           }
         })

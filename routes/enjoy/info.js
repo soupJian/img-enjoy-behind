@@ -13,8 +13,10 @@ router.get('/', async function(req, res, next) {
   const reslt = await mysqlRequest(sql)
   res.send({
     code: successCode,
-    totalAccess: reslt[0].total,
-    totalImg: data[0]['count(*)']
+    data:{
+      totalAccess: reslt[0].total,
+      totalImg: data[0]['count(*)']
+    }
   })
 });
 

@@ -16,7 +16,7 @@ router.post('/', async function(req, res, next) {
   if(result[0]['count(name)'] === 1){
     res.send({
       code: errorCode,
-      message: "用户名已注册，请重新输入！"
+      message: "用户名已注册，请重新输入！",
     })
     return false
   }
@@ -28,14 +28,16 @@ router.post('/', async function(req, res, next) {
       console.log("创建文件夹错误"+err);
       res.send({
         code: errorCode,
-        message: errorMessage
+        message: errorMessage,
       })
       return false
     }
     mysqlRequest(sql)
     res.send({
       code: successCode,
-      message: "注册成功"
+      data:{
+        message: "注册成功",
+      }
     })
   })
 });

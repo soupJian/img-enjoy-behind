@@ -8,7 +8,9 @@ router.get('/', async function(req, res, next) {
   const result = await mysqlRequest(sql)
   res.send({
     code: successCode,
-    ImageList: result
+    data:{
+      ImageList: result,
+    }
   })
 });
 
