@@ -9,34 +9,44 @@ const  options = {
   charset: 'UTF8MB4_GENERAL_CI'
 }
 // 创建与数据库的连接对象
-const connection = mysql.createConnection(options)
-// 建立连接
-// connection.connect((err)=>{
-//   // 如果建立失败
-//   if(err){
-//     console.log(err);
-//   }else{
-//     console.log("连接数据库成功");
-//   }
-// })
-// 断开链接
-// connection.end()
+// const connection = mysql.createConnection(options)
+// 连接池
+const pool = mysql.createPool(options)
 
-const mysqlRequest = (sql) =>{
+// 建立连接
+const getConnection = () =>{
   return new Promise((resolve,reject)=>{
-    console.log(sql)
-    connection.query(sql,(err,result)=>{
+    pool.getConnection((err,connect)=>{
+      // 如果建立失败
       if(err){
         reject(err)
-        console.log("查询异常");
       }else{
-        resolve(result)
+        resolve(connect)
       }
     })
   })
 }
 
+const mysqlRequest = (sql) =>{
+  return new Promise((resolve,reject)=>{
+    getConnection().then(connect=>{
+      console.log(sql)
+      connect.query(sql,(err,result)=>{
+        if(err){
+          reject(err)
+          console.log("查询异常");
+        }else{
+          resolve(result)
+        }
+        connect.release()
+      })
+    }).catch(err=>{
+      reject(err)
+      console.log("数据库连接失败",err)
+    })
+  })
+}
+
 module.exports = {
-  connection,
   mysqlRequest
 };
